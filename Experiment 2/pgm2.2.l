@@ -1,21 +1,25 @@
 %{
 #include <stdio.h>
-int vc = 0;
-int cc = 0;
+int lineno = 1;
 %}
 
+%option noyywrap
+
 %%
-[aeiouyAEIOU]   { vc++; }
-[^aeiouyAEIOU0-9\n] { cc++; }
-\n              { printf("%d vowels\n%d consonants\n", vc, cc); vc = 0; cc = 0; }
+[\t ]*\n     { lineno++; }
+[<>]        { printf("<\t Relational Operators\t Line %d\n", lineno); }
+"void"|"printf"|"scanf" { printf("%s\t Keyword\t\t Line %d\n", yytext,lineno); }
+[({]        { printf("%s\t Opening Brackets\t Line %d\n", yytext, lineno); }
+[)}]        { printf("%s\t Closing Brackets\t Line %d\n", yytext, lineno); }
+[a-zA-Z_][a-zA-Z0-9_]* { printf("%s\t Identifier\t\t Line %d\n", yytext, lineno); }
+\"          { printf("%s\t Double Quotes\t Line %d\n", yytext, lineno); }
+";"         { printf(";\t Semicolon\t\t Line %d\n", lineno); }
+[+/*=]      { printf("%s\t Operator\t\t Line %d\n", yytext, lineno); }
+\"[^\"\n]*\" { printf("%s\t String\t\t Line %d\n", yytext, lineno); }
+.           { printf("%s\t Special Symbols\t Line %d\n", yytext, lineno); }
 %%
 
-int main()
-{
-    printf("Enter String:\n");
+int main() {
     yylex();
     return 0;
-}
-int yywrap() {
-    return 1; 
 }
