@@ -1,16 +1,17 @@
 %{
-	#include<stdio.h>
+#include <stdio.h>
 %}
+
+%%
+[ \t\n]+    /* Ignore spaces, tabs, and newlines */
+"//".*      /* Skip single-line comments */
+"/[*][^*]*[*]+([^/*][^*]*[*]+)*[/]"   /* Skip multi-line comments */
+.|\n        { printf("%s", yytext); } /* Print everything else */
 %%
 
-if|else|printf {printf("%s is a keyword",yytext);}
-[0-9]* {printf("%s is number",yytext);}
-[a-zA-Z]+ {printf("%s is a word",yytext);}
-.|\n {ECHO;}
-%%
-void main() {
-	printf("Enter string : ");
-	yylex();
+int main() {
+    yylex();
+    return 0;
 }
 int yywrap() {
 	return 1;
