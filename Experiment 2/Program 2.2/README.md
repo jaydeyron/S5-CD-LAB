@@ -38,7 +38,7 @@ OUTPUT :
 
 ### Commands used
 ```shell
- lex pgm2.l
+ lex pgm2.2.l
 ```
 ```shell
 gcc lex.yy.c -o pgm2 -lfl
